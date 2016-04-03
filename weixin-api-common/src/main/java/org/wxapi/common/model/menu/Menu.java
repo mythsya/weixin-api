@@ -47,7 +47,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Menu implements JsonSerializable {
 
-    protected List<MenuButton> buttons = new ArrayList<MenuButton>();
+    protected List<MenuButton> buttons = new ArrayList<>();
 
     /**
      * 一级菜单数组，个数应为1~3个

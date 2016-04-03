@@ -11,7 +11,8 @@ dependencies {
         "org.apache.httpcomponents:httpclient:${httpClientVersion}",
         "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
         "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
-        "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+        "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+        "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${jacksonVersion}"
     )
 
     compile(

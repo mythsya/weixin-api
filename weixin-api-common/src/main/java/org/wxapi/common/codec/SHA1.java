@@ -32,20 +32,20 @@ public final class SHA1 {
     /**
      * Calculates the SHA-1 digest and returns the value as a
      * <code>byte[]</code>.
-     * 
+     *
      * @param data
      *            Data to digest
      * @return SHA-1 digest
      * @since 1.7
      */
-    public static byte[] sha1(final byte[] data) {
+    public final static byte[] sha1(final byte[] data) {
         return DigestUtils.sha1(data);
     }
 
     /**
      * Calculates the SHA-1 digest and returns the value as a
      * <code>byte[]</code>.
-     * 
+     *
      * @param data
      *            Data to digest
      * @param charset
@@ -53,7 +53,7 @@ public final class SHA1 {
      * @return SHA-1 digest
      * @since 1.7
      */
-    public static byte[] sha1(final String data, final Charset charset) {
+    public final static byte[] sha1(final String data, final Charset charset) {
         byte[] byteData = getBytes(data, charset);
         if (byteData == null) {
             return null;
@@ -69,7 +69,7 @@ public final class SHA1 {
      * @return SHA-1 digest as a hex string
      * @since 1.7
      */
-    public static String sha1Hex(final byte[] data) {
+    public final static String sha1Hex(final byte[] data) {
         return DigestUtils.sha1Hex(data);
     }
 
@@ -83,7 +83,7 @@ public final class SHA1 {
      * @return SHA-1 digest as a hex string
      * @since 1.7
      */
-    public static String sha1Hex(final String data, final Charset charset) {
+    public final static String sha1Hex(final String data, final Charset charset) {
         byte[] byteData = getBytes(data, charset);
         if (byteData == null) {
             return null;
@@ -99,7 +99,7 @@ public final class SHA1 {
      * @return SHA-1 digest as a hex string
      * @since 1.7
      */
-    public static String sha1HexUTF8(final String data) {
+    public final static String sha1HexUTF8(final String data) {
         return DigestUtils.sha1Hex(data);
     }
 
@@ -112,7 +112,7 @@ public final class SHA1 {
      * @return SHA-1 digest
      * @since 1.7
      */
-    public static byte[] sha1UTF8(final String data) {
+    public final static byte[] sha1UTF8(final String data) {
         return DigestUtils.sha1(data);
     }
 }

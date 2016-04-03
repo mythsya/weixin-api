@@ -3,6 +3,8 @@ package org.wxapi.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -11,7 +13,7 @@ import com.google.common.collect.ImmutableMap;
  * @author xgx
  * @see http://mp.weixin.qq.com/wiki/10/6380dc743053a91c544ffd2b7c959166.html
  */
-public final class GlobalReturnCodes {
+public final class GlobalErrCodes {
 
     /**
      * -1: 系统繁忙，此时请开发者稍候再试
@@ -209,6 +211,10 @@ public final class GlobalReturnCodes {
      */
     public final static boolean isSystemBusy(final int code) {
         return code == SYSTEM_BUSY;
+    }
+
+    public final static String notEmptyOrFromCode(final String message, final int code) {
+        return StringUtils.isNotEmpty(message) ? message : fromCode(code);
     }
 
 }
