@@ -1,0 +1,28 @@
+description "Weixin API Common Utility"
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+dependencies {
+    compile(
+        "com.google.guava:guava:${guavaVersion}",
+        "commons-codec:commons-codec:${commonsCodecVersion}",
+        "org.apache.commons:commons-lang3:${commonsLangVersion}",
+        "org.apache.httpcomponents:httpclient:${httpClientVersion}",
+        "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+        "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
+        "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    )
+
+    compile(
+    	"org.springframework:spring-core"
+    ) {
+    	exclude(module: 'commons-logging')
+    }
+
+    testCompile(
+        "junit:junit:${junitVersion}"
+    )
+}
+
+

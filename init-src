@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DEFAULT_BASEDIR=`pwd`
+
+mksrc ( ) {
+	if [ $# -eq 1 ]; then
+		mkdir -p $1/src/main/{java,resources}
+		mkdir -p $1/src/test/{java,resources}
+	fi
+}
+
+if [ $# -gt 0 ]; then
+	i=1;
+	while (($# > 0))
+	do
+		echo $i,$1
+		if [ -e $1 ]; then
+			mksrc $1
+		fi
+		shift
+		let i=i+1
+	done
+else
+	mksrc $DEFAULT_BASEDIR
+fi
