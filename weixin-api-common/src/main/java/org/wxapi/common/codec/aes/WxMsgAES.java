@@ -242,6 +242,10 @@ public class WxMsgAES {
 
     final static Charset CHARSET = Charset.forName("utf-8");
 
+    final static JaxbHelper<_InXml> inXmlJaxbHelper = new JaxbHelper<>(_InXml.class);
+
+    final static JaxbHelper<_OutXml> outXmlJaxbHelper = new JaxbHelper<>(_OutXml.class);
+
     public static void main(final String[] args) throws JAXBException, WxAesException {
         String encodingAesKey = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG";
         String token = "pamtest";
@@ -249,19 +253,19 @@ public class WxMsgAES {
         WxMsgAES aes = new WxMsgAES(token, encodingAesKey, appId);
         String postData = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[jn1L23DB+6ELqJ+6bruv21Y6MD7KeIfP82D6gU39rmkgczbWwt5+3bnyg5K55bgVtVzd832WzZGMhkP72vVOfg==]]></Encrypt></xml>";
 
-        _InXml in = aes.inXmlJaxbHelper.unmarshal(postData);
+        _InXml in = WxMsgAES.inXmlJaxbHelper.unmarshal(postData);
 
         System.out.println(in);
 
-        String inStr = aes.inXmlJaxbHelper.marshal(in);
+        String inStr = WxMsgAES.inXmlJaxbHelper.marshal(in);
 
         System.out.println(inStr);
 
-        in = aes.inXmlJaxbHelper.unmarshal(inStr);
+        in = WxMsgAES.inXmlJaxbHelper.unmarshal(inStr);
 
         System.out.println(in);
 
-        inStr = aes.inXmlJaxbHelper.marshal(in);
+        inStr = WxMsgAES.inXmlJaxbHelper.marshal(in);
 
         System.out.println(inStr);
 
@@ -269,11 +273,9 @@ public class WxMsgAES {
 
     final Base64 base64 = new Base64();
     byte[] aesKey;
+
     String token;
     String appId;
-
-    final JaxbHelper<_InXml> inXmlJaxbHelper = new JaxbHelper<>(_InXml.class);
-    final JaxbHelper<_OutXml> outXmlJaxbHelper = new JaxbHelper<>(_OutXml.class);
 
     /**
      * 构造函数
@@ -381,7 +383,7 @@ public class WxMsgAES {
         // Object[] encrypt = XMLParse.extract(postData);
         _InXml _xml;
         try {
-            _xml = this.inXmlJaxbHelper.unmarshal(postData);
+            _xml = WxMsgAES.inXmlJaxbHelper.unmarshal(postData);
         } catch (JAXBException e) {
             throw new WxAesException(AesErrCodes.ParseXmlError, null, e);
         }
@@ -490,7 +492,7 @@ public class WxMsgAES {
 
         String result;
         try {
-            result = this.outXmlJaxbHelper.marshal(out);
+            result = WxMsgAES.outXmlJaxbHelper.marshal(out);
         } catch (JAXBException e) {
             throw new WxAesException(AesErrCodes.ParseXmlError, null, e);
         }

@@ -24,12 +24,16 @@ public final class JaxbHelper<T> {
     private Unmarshaller unmarshaller = null;
 
     public JaxbHelper(final Class<? extends T> clazz) {
+        this(clazz, true);
+    }
+
+    public JaxbHelper(final Class<? extends T> clazz, final boolean formattedOutput) {
         this.clazz = clazz;
 
         try {
             this.context = JAXBContext.newInstance(this.clazz);
             this.marshaller = context.createMarshaller();
-            this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formattedOutput);
             this.marshaller.setProperty(CharacterEscapeHandler.class.getName(), new CharacterEscapeHandler() {
                 @Override
                 public void escape(final char[] ac, final int i, final int j, final boolean flag, final Writer writer) throws IOException {
