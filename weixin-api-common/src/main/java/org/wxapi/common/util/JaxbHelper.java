@@ -18,20 +18,18 @@ public final class JaxbHelper<T> {
 
     private final static Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    private final Class<? extends T> clazz;
     private JAXBContext context = null;
     private Marshaller marshaller = null;
     private Unmarshaller unmarshaller = null;
 
-    public JaxbHelper(final Class<? extends T> clazz) {
+    public JaxbHelper(final Class<?>... clazz) {
         this(clazz, true);
     }
 
-    public JaxbHelper(final Class<? extends T> clazz, final boolean formattedOutput) {
-        this.clazz = clazz;
+    public JaxbHelper(final Class<?>[] clazz, final boolean formattedOutput) {
 
         try {
-            this.context = JAXBContext.newInstance(this.clazz);
+            this.context = JAXBContext.newInstance(clazz);
             this.marshaller = context.createMarshaller();
             this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formattedOutput);
             this.marshaller.setProperty(CharacterEscapeHandler.class.getName(), new CharacterEscapeHandler() {

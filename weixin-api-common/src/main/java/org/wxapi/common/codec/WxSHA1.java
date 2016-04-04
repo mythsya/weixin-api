@@ -1,5 +1,9 @@
 package org.wxapi.common.codec;
 
+import java.util.Arrays;
+
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 验证服务器地址的有效性<br>
  *
@@ -27,4 +31,38 @@ package org.wxapi.common.codec;
  */
 public class WxSHA1 {
 
+    /**
+     * 通过检验signature对请求进行校验。<br>
+     *
+     * 加密/校验流程如下：
+     *
+     * <ol>
+     * <li>将token、timestamp、nonce三个参数进行字典序排序</li>
+     * <li>将三个参数字符串拼接成一个字符串进行sha1加密</li>
+     * <li>开发者获得加密后的字符串可与signature对比，标识该请求来源于微信</li>
+     * </ol>
+     *
+     * @param token
+     *            公众号接口配置中的Token验证密钥
+     * @param timestamp
+     *            微信请求URL时间戳
+     * @param nonce
+     *            微信请求URL随机数
+     * @param signature
+     *            微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数，nonce参数
+     * @return 验证成功返回true,否则返回false
+     */
+    public final static boolean checkSignature(final String token, final String timestamp, final String nonce, final String signature) {
+
+        // 1. 将token、timestamp、nonce三个参数进行字典序排序
+        String[] array = new String[] { token, timestamp, nonce };
+        Arrays.sort(array);
+
+        // 2. 将三个参数字符串拼接成一个字符串进行sha1加密
+        String data = StringUtils.join(array);
+        String tempSignature = SHA1.sha1HexUTF8(data);
+
+        // 3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+        return StringUtils.equalsIgnoreCase(tempSignature, signature);
+    }
 }

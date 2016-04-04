@@ -2,7 +2,7 @@ package org.wxapi.common.model.msg;
 
 /**
  * 用户操作引发的事件推送中的事件类型
- * 
+ *
  * @author xgx
  *
  */
@@ -22,7 +22,7 @@ public enum EventType {
 
     public static EventType fromCode(final String v) {
         for (EventType g : EventType.values()) {
-            if (g.getCode().equals(v)) {
+            if (g.getCode().equalsIgnoreCase(v)) {
                 return g;
             }
         }

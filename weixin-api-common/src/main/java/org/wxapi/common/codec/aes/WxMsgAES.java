@@ -182,11 +182,11 @@ public class WxMsgAES {
             }
             // 获得补位所用的字符
             char padChr = chr(amountToPad);
-            String tmp = new String();
+            StringBuilder tmp = new StringBuilder();
             for (int index = 0; index < amountToPad; index++) {
-                tmp += padChr;
+                tmp.append(padChr);
             }
-            return tmp.getBytes(CHARSET);
+            return tmp.toString().getBytes(CHARSET);
         }
 
     }
@@ -247,10 +247,11 @@ public class WxMsgAES {
     final static JaxbHelper<_OutXml> outXmlJaxbHelper = new JaxbHelper<>(_OutXml.class);
 
     public static void main(final String[] args) throws JAXBException, WxAesException {
-        String encodingAesKey = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG";
-        String token = "pamtest";
-        String appId = "wxb11529c136998cb6";
-        WxMsgAES aes = new WxMsgAES(token, encodingAesKey, appId);
+        // String encodingAesKey =
+        // "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG";
+        // String token = "pamtest";
+        // String appId = "wxb11529c136998cb6";
+        // WxMsgAES aes = new WxMsgAES(token, encodingAesKey, appId);
         String postData = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[jn1L23DB+6ELqJ+6bruv21Y6MD7KeIfP82D6gU39rmkgczbWwt5+3bnyg5K55bgVtVzd832WzZGMhkP72vVOfg==]]></Encrypt></xml>";
 
         _InXml in = WxMsgAES.inXmlJaxbHelper.unmarshal(postData);
@@ -480,7 +481,7 @@ public class WxMsgAES {
         String encrypt = encrypt(getRandomStr(), replyMsg);
 
         // 生成安全签名
-        if (timeStamp == "") {
+        if (StringUtils.isEmpty(timeStamp)) {
             timeStamp = Long.toString(System.currentTimeMillis());
         }
 

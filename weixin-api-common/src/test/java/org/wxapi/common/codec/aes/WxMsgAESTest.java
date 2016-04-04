@@ -3,7 +3,10 @@ package org.wxapi.common.codec.aes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import javax.xml.bind.JAXBException;
+
 import org.junit.Test;
+import org.wxapi.common.codec.aes.WxMsgAES._OutXml;
 
 public class WxMsgAESTest {
 
@@ -19,11 +22,6 @@ public class WxMsgAESTest {
 
     String replyMsg2 = "<xml><ToUserName><![CDATA[oia2Tj我是中文jewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
     String afterAesEncrypt2 = "jn1L23DB+6ELqJ+6bruv23M2GmYfkv0xBh2h+XTBOKVKcgDFHle6gqcZ1cZrk3e1qjPQ1F4RsLWzQRG9udbKWesxlkupqcEcW7ZQweImX9+wLMa0GaUzpkycA8+IamDBxn5loLgZpnS7fVAbExOkK5DYHBmv5tptA9tklE/fTIILHR8HLXa5nQvFb3tYPKAlHF3rtTeayNf0QuM+UW/wM9enGIDIJHF7CLHiDNAYxr+r+OrJCmPQyTy8cVWlu9iSvOHPT/77bZqJucQHQ04sq7KZI27OcqpQNSto2OdHCoTccjggX5Z9Mma0nMJBU+jLKJ38YB1fBIz+vBzsYjrTmFQ44YfeEuZ+xRTQwr92vhA9OxchWVINGC50qE/6lmkwWTwGX9wtQpsJKhP+oS7rvTY8+VdzETdfakjkwQ5/Xka042OlUb1/slTwo4RscuQ+RdxSGvDahxAJ6+EAjLt9d8igHngxIbf6YyqqROxuxqIeIch3CssH/LqRs+iAcILvApYZckqmA7FNERspKA5f8GoJ9sv8xmGvZ9Yrf57cExWtnX8aCMMaBropU/1k+hKP5LVdzbWCG0hGwx/dQudYR/eXp3P0XxjlFiy+9DMlaFExWUZQDajPkdPrEeOwofJb";
-
-    @Test
-    public void testDecryptMsg() {
-        fail("Not yet implemented");
-    }
 
     @Test
     public void testEncrypt() {
@@ -49,8 +47,57 @@ public class WxMsgAESTest {
     }
 
     @Test
-    public void testEncryptMsg() {
-        fail("Not yet implemented");
+    public void testIllegalAesKey() {
+        try {
+            new WxMsgAES(token, "abcde", appId);
+        } catch (WxAesException e) {
+            assertEquals(AesErrCodes.IllegalAesKey, e.getErrCode());
+            return;
+        }
+        fail("错误流程不抛出异常？？？");
+    }
+
+    @Test
+    public void testNormalWorkflow() throws JAXBException {
+        WxMsgAES pc;
+        try {
+            pc = new WxMsgAES(token, encodingAesKey, appId);
+            String afterEncrpt = pc.encryptMsg(replyMsg, timestamp, nonce);
+
+            _OutXml out = WxMsgAES.outXmlJaxbHelper.unmarshal(afterEncrpt);
+
+            String msgSignature = out.msgSignature;
+            String encrypt = String.format(xmlFormat, out.encrypt);
+
+            // 第三方收到公众号平台发送的消息
+            String afterDecrpt = pc.decryptMsg(msgSignature, timestamp, nonce, encrypt);
+            assertEquals(replyMsg, afterDecrpt);
+
+        } catch (WxAesException e) {
+            fail("正常流程，怎么就抛出异常了？？？？？？");
+        }
+
+    }
+
+    @Test
+    public void testValidateSignatureError() throws JAXBException {
+        WxMsgAES pc;
+        try {
+            pc = new WxMsgAES(token, encodingAesKey, appId);
+            String afterEncrpt = pc.encryptMsg(replyMsg, timestamp, nonce);
+
+            _OutXml out = WxMsgAES.outXmlJaxbHelper.unmarshal(afterEncrpt);
+
+            String msgSignature = out.msgSignature;
+            String encrypt = String.format(xmlFormat, out.encrypt);
+
+            pc.decryptMsg("12345", timestamp, nonce, encrypt); // 这里签名错误
+
+        } catch (WxAesException e) {
+            assertEquals(AesErrCodes.ValidateSignatureError, e.getErrCode());
+            return;
+        }
+        fail("错误流程不抛出异常？？？");
     }
 
     @Test
