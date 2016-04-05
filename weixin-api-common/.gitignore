@@ -1,1 +1,18 @@
-/bin/
+*.[oa]
+
+*~
+
+# ignore all files in the build/ directory
+build/
+
+bin/
+
+.classpath
+
+.gradle/
+
+.project
+
+.settings/
+
+/weixin-api-common/
