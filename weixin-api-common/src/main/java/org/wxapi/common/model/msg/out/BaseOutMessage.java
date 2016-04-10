@@ -39,13 +39,13 @@ public class BaseOutMessage implements XmlSerializable {
     protected String fromUserName;
 
     @XmlElement(name = "CreateTime", nillable = false, required = true)
-    protected String createTime;
+    protected long createTime;
 
     @XmlElement(name = "MsgType", nillable = false, required = true)
     @XmlJavaTypeAdapter(AdapterCDATA.class)
     protected String msgType;
 
-    public String getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 
@@ -61,7 +61,7 @@ public class BaseOutMessage implements XmlSerializable {
         return toUserName;
     }
 
-    public void setCreateTime(final String createTime) {
+    public void setCreateTime(final long createTime) {
         this.createTime = createTime;
     }
 

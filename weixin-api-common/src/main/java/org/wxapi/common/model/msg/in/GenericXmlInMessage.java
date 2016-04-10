@@ -24,7 +24,7 @@ public class GenericXmlInMessage implements XmlSerializable {
     public String fromUserName;
 
     @XmlElement(name = "CreateTime", nillable = false, required = true)
-    public String createTime;
+    public long createTime;
 
     @XmlElement(name = "MsgType", nillable = false, required = true)
     @XmlJavaTypeAdapter(AdapterCDATA.class)

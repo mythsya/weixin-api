@@ -24,7 +24,7 @@ public abstract class BaseInMessage {
 
     protected String fromUserName;
 
-    protected String createTime;
+    protected long createTime;
 
     protected String msgType;
 
@@ -37,7 +37,7 @@ public abstract class BaseInMessage {
 
     public abstract MessageType defaultMessageType();
 
-    public String getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 
