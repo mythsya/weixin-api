@@ -32,6 +32,7 @@ public final class JaxbHelper<T> {
             this.context = JAXBContext.newInstance(clazz);
             this.marshaller = context.createMarshaller();
             this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formattedOutput);
+
             this.marshaller.setProperty(CharacterEscapeHandler.class.getName(), new CharacterEscapeHandler() {
                 @Override
                 public void escape(final char[] ac, final int i, final int j, final boolean flag, final Writer writer) throws IOException {
@@ -49,11 +50,19 @@ public final class JaxbHelper<T> {
     }
 
     public final String marshal(final T x) throws JAXBException {
+        return marshal(x, true);
+    }
+
+    public final String marshal(final T x, final boolean withoutXmlHead) throws JAXBException {
         if (marshaller != null) {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             marshaller.marshal(x, os);
             String xml = new String(os.toByteArray(), DEFAULT_CHARSET);
-            return xml.replaceFirst("(?s)<\\?xml.*?\\?>(\r)?(\n)?", "");
+            if (withoutXmlHead) {
+                return xml.replaceFirst("(?s)<\\?xml.*?\\?>(\r)?(\n)?", "");
+            } else {
+                return xml;
+            }
 
         } else {
             throw new JAXBException("No JAXBContext exists!");

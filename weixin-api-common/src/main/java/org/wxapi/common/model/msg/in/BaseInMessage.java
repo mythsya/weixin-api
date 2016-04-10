@@ -3,7 +3,7 @@ package org.wxapi.common.model.msg.in;
 import org.wxapi.common.model.msg.MessageType;
 
 /**
- * 普通消息、事件消息和被动回复消息的基类
+ * 普通消息、事件消息的基类
  *
  * <pre>
  *  <xml>
